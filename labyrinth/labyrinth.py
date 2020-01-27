@@ -282,6 +282,10 @@ class MyGame(arcade.Window):
             self.player_sprite.change_x = -MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = MOVEMENT_SPEED
+        elif key == arcade.key.W:
+            arcade.set_background_color(arcade.color.WINDSOR_TAN)
+        elif key == arcade.key.B:
+            arcade.set_background_color(arcade.color.BLACK)
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
