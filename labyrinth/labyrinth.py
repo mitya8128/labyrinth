@@ -150,6 +150,7 @@ class MyGame(arcade.Window):
                 for column in range(GRID_WIDTH):
                     if self.grid[row][column] == 1:
                         wall = arcade.Sprite(":resources:images/tiles/grassCenter.png", SPRITE_SCALING)
+                        wall._set_alpha(254)  # set sprites visibility (0-invisible,255-opaque)
                         wall.center_x = column * SPRITE_SIZE + SPRITE_SIZE / 2
                         wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
                         self.wall_list.append(wall)
