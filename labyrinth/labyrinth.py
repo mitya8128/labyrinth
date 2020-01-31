@@ -32,7 +32,7 @@ NUMBER_OF_STEPS = 4            # initially 4
 
 # Physics
 MOVEMENT_SPEED = 3             # initially 3
-JUMP_SPEED = 10                # initially 14
+JUMP_SPEED = 12                # initially 14
 GRAVITY = 0.5                  # initially 0.5
 
 # How close the player can get to the edge before we scroll.
@@ -126,6 +126,7 @@ class MyGame(arcade.Window):
         self.draw_time = 0
         self.processing_time = 0
         self.physics_engine = None
+        self.game_over = False
         self.score = 0
         self.end_map_y = (GRID_HEIGHT * SPRITE_SIZE) + 10
         # self.set_update_rate(1/55)    # for mac os
@@ -136,6 +137,7 @@ class MyGame(arcade.Window):
         self.wall_list = arcade.SpriteList(use_spatial_hash=True)
         self.player_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
+        self.game_over = False
 
         # Create cave system using a 2D grid
         self.grid = create_grid(GRID_WIDTH, GRID_HEIGHT)
@@ -271,6 +273,9 @@ class MyGame(arcade.Window):
                          self.height - 100 + self.view_bottom,
                          arcade.color.WHITE, 16)
 
+        if self.game_over:
+            arcade.draw_text("Game Over", self.view_left + 500, self.view_bottom + 400, arcade.color.WHITE, 30)
+
         self.draw_time = timeit.default_timer() - draw_start_time
 
     def on_key_press(self, key, modifiers):
@@ -363,6 +368,9 @@ class MyGame(arcade.Window):
         for coin in hit_list:
             coin.remove_from_sprite_lists()
             self.score += 1
+        # Game over event
+        if self.player_sprite.center_y >= self.end_map_y:
+            self.game_over = True
 
 
 def main():
