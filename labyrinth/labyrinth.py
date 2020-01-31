@@ -209,8 +209,8 @@ class MyGame(arcade.Window):
             # Randomly position
             max_x = GRID_WIDTH * SPRITE_SIZE
             max_y = GRID_HEIGHT * SPRITE_SIZE
-            self.player_sprite.center_x = random.randrange(max_x)
-            self.player_sprite.center_y = random.randrange(max_y)
+            self.player_sprite.center_x = 64 + random.randrange(100)
+            self.player_sprite.center_y = 250 + random.randrange(100)
 
             # Are we in a wall?
             walls_hit = arcade.check_for_collision_with_list(self.player_sprite, self.wall_list)
