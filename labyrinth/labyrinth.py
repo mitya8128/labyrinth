@@ -127,6 +127,8 @@ class MyGame(arcade.Window):
         self.processing_time = 0
         self.physics_engine = None
         self.score = 0
+        self.end_map_y = (GRID_HEIGHT * SPRITE_SIZE) + 10
+        # self.set_update_rate(1/55)    # for mac os
 
         arcade.set_background_color(arcade.color.BLACK)
 
