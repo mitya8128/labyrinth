@@ -188,7 +188,7 @@ class MyGame(arcade.Window):
         self.player_list.append(self.player_sprite)
 
         # loop that places coins on the map
-        for x in range(128, 1250, 256):
+        for x in range(128, 1250, 20):
             coin = arcade.Sprite(":resources:images/items/coinGold.png", COIN_SCALING)
             # Boolean variable if we successfully placed the coin
             coin_placed_successfully = False
@@ -275,6 +275,7 @@ class MyGame(arcade.Window):
 
         if self.game_over:
             arcade.draw_text("Game Over", self.view_left + 500, self.view_bottom + 400, arcade.color.WHITE, 30)
+            arcade.draw_text(f"Collected coins: {self.score:.3f}", self.view_left + 500, self.view_bottom + 350, arcade.color.WHITE, 30)
 
         self.draw_time = timeit.default_timer() - draw_start_time
 
