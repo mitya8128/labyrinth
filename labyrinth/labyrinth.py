@@ -133,7 +133,7 @@ class MyGame(arcade.Window):
 
         arcade.set_background_color(arcade.color.BLACK)
 
-    def setup(self):
+    def setup(self, SPRITE_SCALING, COIN_SCALING):
         self.wall_list = arcade.SpriteList(use_spatial_hash=True)
         self.player_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
@@ -228,7 +228,8 @@ class MyGame(arcade.Window):
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
                                                          self.wall_list, gravity_constant=GRAVITY)
 
-    def new_lists(self, NEW_SPRITE_SCALING):
+
+    def new_lists(self, SPRITE_SCALING, COIN_SCALING):
         self.new_wall_list = arcade.SpriteList(use_spatial_hash=True)
         self.new_player_list = arcade.SpriteList()
         self.new_coin_list = arcade.SpriteList()
@@ -243,7 +244,7 @@ class MyGame(arcade.Window):
             for row in range(GRID_HEIGHT):
                 for column in range(GRID_WIDTH):
                     if self.grid[row][column] == 1:
-                        wall = arcade.Sprite(":resources:images/tiles/grassCenter.png", NEW_SPRITE_SCALING)
+                        wall = arcade.Sprite(":resources:images/tiles/grassCenter.png", SPRITE_SCALING)
                         wall._set_alpha(254)  # set sprites visibility (0-invisible,255-opaque)
                         wall.center_x = column * SPRITE_SIZE + SPRITE_SIZE / 2
                         wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
@@ -266,7 +267,7 @@ class MyGame(arcade.Window):
                     column_count = end_column - start_column + 1
                     column_mid = (start_column + end_column) / 2
 
-                    wall = arcade.Sprite(":resources:images/tiles/grassCenter.png", NEW_SPRITE_SCALING,
+                    wall = arcade.Sprite(":resources:images/tiles/grassCenter.png", SPRITE_SCALING,
                                          repeat_count_x=column_count)
                     wall.center_x = column_mid * SPRITE_SIZE + SPRITE_SIZE / 2
                     wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
@@ -275,7 +276,7 @@ class MyGame(arcade.Window):
 
                 # Set up the player
                 self.new_player_sprite = arcade.Sprite(
-                    ":resources:images/animated_characters/female_person/femalePerson_idle.png", NEW_SPRITE_SCALING)
+                    ":resources:images/animated_characters/female_person/femalePerson_idle.png", SPRITE_SCALING)
                 self.new_player_list.append(self.player_sprite)
                 self.new_player_sprite.center_x = old_player_sprite_center_x
                 self.new_player_sprite.center_y = old_player_sprite_center_y
@@ -360,25 +361,25 @@ class MyGame(arcade.Window):
         elif key == arcade.key.B:
             arcade.set_background_color(arcade.color.BLACK)
         elif key == arcade.key.KEY_1:
-            NEW_SPRITE_SCALING = 0.125    # here we need some function that draw the wall/coin/player lists with another scaling values
-            self.new_lists(NEW_SPRITE_SCALING)
+            SPRITE_SCALING = 0.125    # here we need some function that draw the wall/coin/player lists with another scaling values
+            self.new_lists(SPRITE_SCALING, COIN_SCALING)
             self.new_wall_list.draw()
             self.new_player_list.draw()
             self.new_coin_list.draw()
         elif key == arcade.key.KEY_2:
-            NEW_SPRITE_SCALING = 0.325
-            self.new_lists(NEW_SPRITE_SCALING)
+            SPRITE_SCALING = 0.325
+            self.new_lists(SPRITE_SCALING, COIN_SCALING)
             self.new_wall_list.draw()
             self.new_player_list.draw()
             self.new_coin_list.draw()
         elif key == arcade.key.KEY_3:
-            NEW_SPRITE_SCALING = 0.5
-            self.new_lists(NEW_SPRITE_SCALING)
+            SPRITE_SCALING = 0.5
+            self.new_lists(SPRITE_SCALING, COIN_SCALING)
             self.wall_list.draw()
             self.new_player_list.draw()
             self.coin_list.draw()
         elif key == arcade.key.R:
-            self.setup()
+            self.setup(0.125,COIN_SCALING)
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
@@ -460,7 +461,7 @@ class MyGame(arcade.Window):
 
 def main():
     game = MyGame()
-    game.setup()
+    game.setup(SPRITE_SCALING, COIN_SCALING)
     arcade.run()
 
 
