@@ -205,6 +205,7 @@ class MyGame(arcade.Window):
                     coin_placed_successfully = True
 
             self.coin_list.append(coin)
+            old_coin_list = self.coin_list
 
         # Randomly place the player. If we are in a wall, repeat until we aren't.
         placed = False
@@ -215,6 +216,8 @@ class MyGame(arcade.Window):
             max_y = GRID_HEIGHT * SPRITE_SIZE
             self.player_sprite.center_x = 64 + random.randrange(100)
             self.player_sprite.center_y = 250 + random.randrange(100)
+            old_player_sprite_center_x = self.player_sprite.center_x
+            old_player_sprite_center_y = self.player_sprite.center_y
 
             # Are we in a wall?
             walls_hit = arcade.check_for_collision_with_list(self.player_sprite, self.wall_list)
@@ -225,14 +228,13 @@ class MyGame(arcade.Window):
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
                                                          self.wall_list, gravity_constant=GRAVITY)
 
-
-    def new_lists(self):
+    def new_lists(self, NEW_SPRITE_SCALING):
         self.new_wall_list = arcade.SpriteList(use_spatial_hash=True)
         self.new_player_list = arcade.SpriteList()
         self.new_coin_list = arcade.SpriteList()
         self.game_over = False
 
-        NEW_SPRITE_SCALING = SPRITE_SCALING
+        # NEW_SPRITE_SCALING
 
         # Create sprites based on 2D grid
         if not MERGE_SPRITES:
@@ -272,14 +274,16 @@ class MyGame(arcade.Window):
                     self.new_wall_list.append(wall)
 
                 # Set up the player
-                self.new_player_sprite = arcade.Sprite(":resources:images/animated_characters/female_person/femalePerson_idle.png", NEW_SPRITE_SCALING)
+                self.new_player_sprite = arcade.Sprite(
+                    ":resources:images/animated_characters/female_person/femalePerson_idle.png", NEW_SPRITE_SCALING)
                 self.new_player_list.append(self.player_sprite)
-                self.new_player_sprite.center_x = self.player_sprite.center_x
-                self.new_player_sprite.center_y = self.player_sprite.center_y
+                self.new_player_sprite.center_x = old_player_sprite_center_x
+                self.new_player_sprite.center_y = old_player_sprite_center_y
 
                 # coins
-                self.new_coin_list = self.coin_list
+                self.new_coin_list = old_coin_list
                 coin = arcade.Sprite(":resources:images/items/coinGold.png", COIN_SCALING)
+                self.new_coin_list.append(coin)
 
                 # new physics engine
                 self.physics_engine = arcade.PhysicsEnginePlatformer(self.new_player_sprite,
@@ -356,23 +360,25 @@ class MyGame(arcade.Window):
         elif key == arcade.key.B:
             arcade.set_background_color(arcade.color.BLACK)
         elif key == arcade.key.KEY_1:
-            SPRITE_SCALING = 0.125    # here we need some function that draw the wall/coin/player lists with another scaling values
-            self.new_lists()
+            NEW_SPRITE_SCALING = 0.125    # here we need some function that draw the wall/coin/player lists with another scaling values
+            self.new_lists(NEW_SPRITE_SCALING)
             self.new_wall_list.draw()
             self.new_player_list.draw()
             self.new_coin_list.draw()
         elif key == arcade.key.KEY_2:
-            SPRITE_SCALING = 0.325
-            self.new_lists()
+            NEW_SPRITE_SCALING = 0.325
+            self.new_lists(NEW_SPRITE_SCALING)
             self.new_wall_list.draw()
             self.new_player_list.draw()
             self.new_coin_list.draw()
         elif key == arcade.key.KEY_3:
-            SPRITE_SCALING = 0.5
-            self.new_lists()
+            NEW_SPRITE_SCALING = 0.5
+            self.new_lists(NEW_SPRITE_SCALING)
             self.wall_list.draw()
             self.new_player_list.draw()
             self.coin_list.draw()
+        elif key == arcade.key.R:
+            self.setup()
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
