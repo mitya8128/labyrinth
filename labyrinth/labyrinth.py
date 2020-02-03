@@ -380,6 +380,7 @@ class MyGame(arcade.Window):
             self.coin_list.draw()
         elif key == arcade.key.R:
             self.setup(0.125,COIN_SCALING)
+            self.score = 0
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
