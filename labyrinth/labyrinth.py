@@ -306,36 +306,36 @@ class MyGame(arcade.Window):
         self.coin_list.draw()
 
         # Draw info on the screen
-        sprite_count = len(self.wall_list)
+        #sprite_count = len(self.wall_list)
 
-        output = f"Sprite Count: {sprite_count}"
-        arcade.draw_text(output,
-                         self.view_left + 20,
-                         self.height - 20 + self.view_bottom,
-                         arcade.color.WHITE, 16)
+        #output = f"Sprite Count: {sprite_count}"
+        #arcade.draw_text(output,
+        #                 self.view_left + 20,
+        #                 self.height - 20 + self.view_bottom,
+        #                 arcade.color.WHITE, 16)
 
-        output = f"Drawing time: {self.draw_time:.3f}"
-        arcade.draw_text(output,
-                         self.view_left + 20,
-                         self.height - 40 + self.view_bottom,
-                         arcade.color.WHITE, 16)
+        #output = f"Drawing time: {self.draw_time:.3f}"
+        #arcade.draw_text(output,
+        #                 self.view_left + 20,
+        #                 self.height - 40 + self.view_bottom,
+        #                 arcade.color.WHITE, 16)
 
-        output = f"Processing time: {self.processing_time:.3f}"
-        arcade.draw_text(output,
-                         self.view_left + 20,
-                         self.height - 60 + self.view_bottom,
-                         arcade.color.WHITE, 16)
+        #output = f"Processing time: {self.processing_time:.3f}"
+        #arcade.draw_text(output,
+        #                 self.view_left + 20,
+        #                 self.height - 60 + self.view_bottom,
+        #                 arcade.color.WHITE, 16)
 
         output = f"Coins: {self.score:.3f}"
         arcade.draw_text(output,
                          self.view_left + 20,
-                         self.height - 80 + self.view_bottom,
+                         self.height - 37 + self.view_bottom,
                          arcade.color.WHITE, 16)
 
         output = "Do not fall into the deep!"
         arcade.draw_text(output,
                          self.view_left + 20,
-                         self.height - 100 + self.view_bottom,
+                         self.height - 57 + self.view_bottom,
                          arcade.color.WHITE, 16)
 
         if self.game_over:
