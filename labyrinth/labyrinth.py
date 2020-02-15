@@ -11,6 +11,7 @@ python -m arcade.examples.procedural_caves_cellular
 import random
 import arcade
 import timeit
+import time
 import os
 
 # Sprite scaling. Make this larger, like 0.5 to zoom in and add
@@ -129,6 +130,8 @@ class MyGame(arcade.Window):
         self.game_over = False
         self.score = 0
         self.end_map_y = (GRID_HEIGHT * SPRITE_SIZE) + 10
+        self.down_map = -300
+        self.reload = False
         # self.set_update_rate(1/55)    # for mac os
 
         arcade.set_background_color(arcade.color.BLACK)
@@ -138,6 +141,7 @@ class MyGame(arcade.Window):
         self.player_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
         self.game_over = False
+        self.reload = False
 
         # Create cave system using a 2D grid
         self.grid = create_grid(GRID_WIDTH, GRID_HEIGHT)
@@ -344,6 +348,9 @@ class MyGame(arcade.Window):
 
         self.draw_time = timeit.default_timer() - draw_start_time
 
+        if self.reload:
+            arcade.draw_text("You failed!", self.view_left + 500, self.view_bottom + 400, arcade.color.WHITE, 30)
+
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
 
@@ -458,6 +465,12 @@ class MyGame(arcade.Window):
         # Game over event
         if self.player_sprite.center_y >= self.end_map_y:
             self.game_over = True
+        # Falling event
+        if self.player_sprite.center_y < self.down_map:
+            self.reload = True
+            time.sleep(5.0)
+            self.setup(SPRITE_SCALING,COIN_SCALING)
+            self.score = 0
 
 
 def main():
