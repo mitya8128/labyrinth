@@ -33,7 +33,7 @@ NUMBER_OF_STEPS = 4            # initially 4
 
 # Physics
 MOVEMENT_SPEED = 3             # initially 3
-JUMP_SPEED = 12                # optimally 12
+JUMP_SPEED = 20                # optimally 12
 GRAVITY = 0.5                  # initially 0.5
 
 # How close the player can get to the edge before we scroll.
@@ -192,6 +192,7 @@ class MyGame(arcade.Window):
 
         # Set up and place the portal
         self.portal_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_idle.png", 0.3)
+        self.portal_sprite.alpha = 255
         self.portal_list.append(self.portal_sprite)
 
         placed_portal = False
@@ -260,9 +261,9 @@ class MyGame(arcade.Window):
 
         # Create cave system using a 2D grid
         self.grid = create_grid(GRID_WIDTH, GRID_HEIGHT)
-        initialize_grid(self.grid,CHANCE_TO_START_ALIVE=0.45)
+        initialize_grid(self.grid, 0.45)
         for step in range(NUMBER_OF_STEPS):
-            self.grid = do_simulation_step(self.grid,DEATH_LIMIT=4,BIRTH_LIMIT=4)
+            self.grid = do_simulation_step(self.grid, 4, 4)
 
         # Create sprites based on 2D grid
         if not MERGE_SPRITES:
