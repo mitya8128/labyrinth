@@ -191,7 +191,7 @@ class MyGame(arcade.Window):
 
 
         # Set up and place the portal
-        self.portal_sprite = arcade.Sprite(":resources:images/animated_characters/female_person/femalePerson_idle.png", SPRITE_SCALING)
+        self.portal_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_idle.png", 0.3)
         self.portal_list.append(self.portal_sprite)
 
         placed_portal = False
@@ -589,7 +589,7 @@ class MyGame(arcade.Window):
         # Check for collision with portal
         if arcade.check_for_collision(self.player_sprite,self.portal_sprite) == True:
             # game = MyGame()
-            game.setup_2(SPRITE_SCALING,COIN_SCALING)
+            self.setup_2(SPRITE_SCALING,COIN_SCALING)
 
 
 def main():
