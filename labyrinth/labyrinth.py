@@ -1,11 +1,6 @@
 """
-This example procedurally develops a random cave based on cellular automata.
-
-For more information, see:
-https://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664
-
-If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.procedural_caves_cellular
+code for jumping_caves arcade (https://mitya8128.itch.io/jumping-caves)
+based heavily on some of the examples from arcade.academy website
 """
 
 import random
@@ -14,9 +9,7 @@ import timeit
 import time
 import os
 
-# Sprite scaling. Make this larger, like 0.5 to zoom in and add
-# 'mystery' to what you can see. Make it smaller, like 0.1 to see
-# more of the map.
+# Sprite scaling.
 SPRITE_SCALING = 0.125
 SPRITE_SIZE = 128 * SPRITE_SCALING
 COIN_SCALING = 0.25
@@ -142,10 +135,9 @@ class Cave():
                         wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
                         self.wall_list.append(wall)
         else:
-            # This uses new Arcade 1.3.1 features, that allow me to create a
-            # larger sprite with a repeating texture. So if there are multiple
-            # cells in a row with a wall, we merge them into one sprite, with a
+            # if there are multiple cells in a row with a wall,  merge them into one sprite, with a
             # repeating texture for each cell. This reduces our sprite count.
+
             for row in range(GRID_HEIGHT):
                 column = 0
                 while column < GRID_WIDTH:
@@ -254,10 +246,7 @@ class Cave():
                         wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
                         self.wall_list.append(wall)
         else:
-            # This uses new Arcade 1.3.1 features, that allow me to create a
-            # larger sprite with a repeating texture. So if there are multiple
-            # cells in a row with a wall, we merge them into one sprite, with a
-            # repeating texture for each cell. This reduces our sprite count.
+
             for row in range(GRID_HEIGHT):
                 column = 0
                 while column < GRID_WIDTH:
@@ -333,10 +322,7 @@ class MyGame(arcade.Window, Cave):
     def __init__(self):
         super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, resizable=True)
 
-        # Set the working directory (where we expect to find files) to the same
-        # directory this .py file is in. You can leave this out of your own
-        # code, but it is needed to easily run the examples using "python -m"
-        # as mentioned at the top of this program.
+        # Set the working directory
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
