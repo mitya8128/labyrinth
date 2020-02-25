@@ -26,15 +26,15 @@ GRID_WIDTH = 400
 GRID_HEIGHT = 300
 
 # Parameters for cellular automata
-CHANCE_TO_START_ALIVE = 0.4    # initially 0.4
-DEATH_LIMIT = 3                # initially 3
-BIRTH_LIMIT = 4                # initially 4
-NUMBER_OF_STEPS = 4            # initially 4
+CHANCE_TO_START_ALIVE = 0.4  # initially 0.4
+DEATH_LIMIT = 3  # initially 3
+BIRTH_LIMIT = 4  # initially 4
+NUMBER_OF_STEPS = 4  # initially 4
 
 # Physics
-MOVEMENT_SPEED = 3             # initially 3
-JUMP_SPEED = 20                # optimally 12
-GRAVITY = 0.5                  # initially 0.5
+MOVEMENT_SPEED = 3  # initially 3
+JUMP_SPEED = 20  # optimally 12
+GRAVITY = 0.5  # initially 0.5
 
 # How close the player can get to the edge before we scroll.
 VIEWPORT_MARGIN = 300
@@ -53,7 +53,7 @@ def create_grid(width, height):
     return [[0 for _x in range(width)] for _y in range(height)]
 
 
-def initialize_grid(grid,CHANCE_TO_START_ALIVE):
+def initialize_grid(grid, CHANCE_TO_START_ALIVE):
     """ Randomly set grid locations to on/off based on chance. """
     height = len(grid)
     width = len(grid[0])
@@ -82,7 +82,7 @@ def count_alive_neighbors(grid, x, y):
     return alive_count
 
 
-def do_simulation_step(old_grid,DEATH_LIMIT, BIRTH_LIMIT):
+def do_simulation_step(old_grid, DEATH_LIMIT, BIRTH_LIMIT):
     """ Run a step of the cellular automaton. """
     height = len(old_grid)
     width = len(old_grid[0])
@@ -101,7 +101,6 @@ def do_simulation_step(old_grid,DEATH_LIMIT, BIRTH_LIMIT):
                 else:
                     new_grid[y][x] = 0
     return new_grid
-
 
 
 class Cave():
@@ -126,10 +125,9 @@ class Cave():
 
         # Create cave system using a 2D grid
         self.grid = create_grid(GRID_WIDTH, GRID_HEIGHT)
-        initialize_grid(self.grid,CHANCE_TO_START_ALIVE)
+        initialize_grid(self.grid, CHANCE_TO_START_ALIVE)
         for step in range(NUMBER_OF_STEPS):
-            self.grid = do_simulation_step(self.grid, DEATH_LIMIT,BIRTH_LIMIT)
-
+            self.grid = do_simulation_step(self.grid, DEATH_LIMIT, BIRTH_LIMIT)
 
         # Create sprites based on 2D grid
         if not MERGE_SPRITES:
@@ -167,7 +165,6 @@ class Cave():
                     wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
                     wall.width = SPRITE_SIZE * column_count
                     self.wall_list.append(wall)
-
 
         # Set up and place the portal
         self.portal_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_idle.png", 0.3)
@@ -230,7 +227,7 @@ class Cave():
 
         # Physics engine
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
-                                                         self.wall_list, gravity_constant=GRAVITY)
+                                                             self.wall_list, gravity_constant=GRAVITY)
 
     def setup_2(self, SPRITE_SCALING, COIN_SCALING):
         self.wall_list = arcade.SpriteList(use_spatial_hash=True)
@@ -328,7 +325,7 @@ class Cave():
                                                              self.wall_list, gravity_constant=GRAVITY)
 
 
-class MyGame(arcade.Window,Cave):
+class MyGame(arcade.Window, Cave):
     """
     Main application class.
     """
@@ -356,8 +353,6 @@ class MyGame(arcade.Window,Cave):
 
         arcade.set_background_color(arcade.color.BLACK)
 
-
-
     def on_draw(self):
         """ Render the screen. """
 
@@ -374,22 +369,22 @@ class MyGame(arcade.Window,Cave):
         self.coin_list.draw()
 
         # Draw info on the screen
-        #sprite_count = len(self.wall_list)
+        # sprite_count = len(self.wall_list)
 
-        #output = f"Sprite Count: {sprite_count}"
-        #arcade.draw_text(output,
+        # output = f"Sprite Count: {sprite_count}"
+        # arcade.draw_text(output,
         #                 self.view_left + 20,
         #                 self.height - 20 + self.view_bottom,
         #                 arcade.color.WHITE, 16)
 
-        #output = f"Drawing time: {self.draw_time:.3f}"
-        #arcade.draw_text(output,
+        # output = f"Drawing time: {self.draw_time:.3f}"
+        # arcade.draw_text(output,
         #                 self.view_left + 20,
         #                 self.height - 40 + self.view_bottom,
         #                 arcade.color.WHITE, 16)
 
-        #output = f"Processing time: {self.processing_time:.3f}"
-        #arcade.draw_text(output,
+        # output = f"Processing time: {self.processing_time:.3f}"
+        # arcade.draw_text(output,
         #                 self.view_left + 20,
         #                 self.height - 60 + self.view_bottom,
         #                 arcade.color.WHITE, 16)
@@ -408,7 +403,8 @@ class MyGame(arcade.Window,Cave):
 
         if self.game_over:
             arcade.draw_text("Game Over", self.view_left + 500, self.view_bottom + 400, arcade.color.WHITE, 30)
-            arcade.draw_text(f"Collected coins: {self.score:.3f}", self.view_left + 500, self.view_bottom + 350, arcade.color.WHITE, 30)
+            arcade.draw_text(f"Collected coins: {self.score:.3f}", self.view_left + 500, self.view_bottom + 350,
+                             arcade.color.WHITE, 30)
 
         self.draw_time = timeit.default_timer() - draw_start_time
 
@@ -432,7 +428,7 @@ class MyGame(arcade.Window,Cave):
         elif key == arcade.key.B:
             arcade.set_background_color(arcade.color.BLACK)
         elif key == arcade.key.KEY_1:
-            SPRITE_SCALING = 0.125    # here we need some function that draw the wall/coin/player lists with another scaling values
+            SPRITE_SCALING = 0.125  # here we need some function that draw the wall/coin/player lists with another scaling values
             self.new_lists(SPRITE_SCALING, COIN_SCALING)
             self.new_wall_list.draw()
             self.new_player_list.draw()
@@ -450,7 +446,7 @@ class MyGame(arcade.Window,Cave):
             self.new_player_list.draw()
             self.coin_list.draw()
         elif key == arcade.key.R:
-            self.setup(0.125,COIN_SCALING)
+            self.setup(0.125, COIN_SCALING)
             self.score = 0
 
     def on_key_release(self, key, modifiers):
@@ -533,12 +529,12 @@ class MyGame(arcade.Window,Cave):
         if self.player_sprite.center_y < self.down_map:
             self.reload = True
             time.sleep(5.0)
-            self.setup(SPRITE_SCALING,COIN_SCALING)
+            self.setup(SPRITE_SCALING, COIN_SCALING)
             self.score = 0
         # Check for collision with portal
-        if arcade.check_for_collision(self.player_sprite,self.portal_sprite) == True:
+        if arcade.check_for_collision(self.player_sprite, self.portal_sprite) == True:
             # game = MyGame()
-            self.setup_2(SPRITE_SCALING,COIN_SCALING)
+            self.setup_2(SPRITE_SCALING, COIN_SCALING)
 
 
 def main():
