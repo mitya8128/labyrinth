@@ -103,40 +103,19 @@ def do_simulation_step(old_grid,DEATH_LIMIT, BIRTH_LIMIT):
     return new_grid
 
 
-class MyGame(arcade.Window):
-    """
-    Main application class.
-    """
+
+class Cave():
+    # class to make caves
 
     def __init__(self):
-        super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, resizable=True)
-
-        # Set the working directory (where we expect to find files) to the same
-        # directory this .py file is in. You can leave this out of your own
-        # code, but it is needed to easily run the examples using "python -m"
-        # as mentioned at the top of this program.
-        file_path = os.path.dirname(os.path.abspath(__file__))
-        os.chdir(file_path)
 
         self.grid = None
         self.wall_list = None
         self.player_list = None
         self.player_sprite = None
         self.portal_sprite = None
-        self.view_bottom = 0
-        self.view_left = 0
-        self.draw_time = 0
-        self.processing_time = 0
-        self.physics_engine = None
-        self.game_over = False
-        self.score = 0
-        self.end_map_y = (GRID_HEIGHT * SPRITE_SIZE) + 10
-        self.down_map = -300
-        self.reload = False
-        # self.set_update_rate(1/55)    # for mac os
 
-        arcade.set_background_color(arcade.color.BLACK)
-
+    # self.set_update_rate(1/55)    # for mac os
     def setup(self, SPRITE_SCALING, COIN_SCALING):
         self.wall_list = arcade.SpriteList(use_spatial_hash=True)
         self.player_list = arcade.SpriteList()
@@ -347,6 +326,35 @@ class MyGame(arcade.Window):
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
                                                              self.wall_list, gravity_constant=GRAVITY)
+
+
+class MyGame(arcade.Window,Cave):
+    """
+    Main application class.
+    """
+
+    def __init__(self):
+        super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, resizable=True)
+
+        # Set the working directory (where we expect to find files) to the same
+        # directory this .py file is in. You can leave this out of your own
+        # code, but it is needed to easily run the examples using "python -m"
+        # as mentioned at the top of this program.
+        file_path = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(file_path)
+
+        self.view_bottom = 0
+        self.view_left = 0
+        self.draw_time = 0
+        self.processing_time = 0
+        self.physics_engine = None
+        self.game_over = False
+        self.score = 0
+        self.end_map_y = (GRID_HEIGHT * SPRITE_SIZE) + 10
+        self.down_map = -300
+        self.reload = False
+
+        arcade.set_background_color(arcade.color.BLACK)
 
 
 
