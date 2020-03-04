@@ -228,66 +228,6 @@ class MyGame(arcade.Window):
                                                          self.wall_list, gravity_constant=GRAVITY)
 
 
-    def new_lists(self, SPRITE_SCALING, COIN_SCALING):
-        self.new_wall_list = arcade.SpriteList(use_spatial_hash=True)
-        self.new_player_list = arcade.SpriteList()
-        self.new_coin_list = arcade.SpriteList()
-        self.game_over = False
-
-        # NEW_SPRITE_SCALING
-
-        # Create sprites based on 2D grid
-        if not MERGE_SPRITES:
-            # This is the simple-to-understand method. Each grid location
-            # is a sprite.
-            for row in range(GRID_HEIGHT):
-                for column in range(GRID_WIDTH):
-                    if self.grid[row][column] == 1:
-                        wall = arcade.Sprite(":resources:images/tiles/grassCenter.png", SPRITE_SCALING)
-                        wall._set_alpha(254)  # set sprites visibility (0-invisible,255-opaque)
-                        wall.center_x = column * SPRITE_SIZE + SPRITE_SIZE / 2
-                        wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
-                        self.new_wall_list.append(wall)
-        else:
-            # This uses new Arcade 1.3.1 features, that allow me to create a
-            # larger sprite with a repeating texture. So if there are multiple
-            # cells in a row with a wall, we merge them into one sprite, with a
-            # repeating texture for each cell. This reduces our sprite count.
-            for row in range(GRID_HEIGHT):
-                column = 0
-                while column < GRID_WIDTH:
-                    while column < GRID_WIDTH and self.grid[row][column] == 0:
-                        column += 1
-                    start_column = column
-                    while column < GRID_WIDTH and self.grid[row][column] == 1:
-                        column += 1
-                    end_column = column - 1
-
-                    column_count = end_column - start_column + 1
-                    column_mid = (start_column + end_column) / 2
-
-                    wall = arcade.Sprite(":resources:images/tiles/grassCenter.png", SPRITE_SCALING,
-                                         repeat_count_x=column_count)
-                    wall.center_x = column_mid * SPRITE_SIZE + SPRITE_SIZE / 2
-                    wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
-                    wall.width = SPRITE_SIZE * column_count
-                    self.new_wall_list.append(wall)
-
-                # Set up the player
-                self.new_player_sprite = arcade.Sprite(
-                    ":resources:images/animated_characters/female_person/femalePerson_idle.png", SPRITE_SCALING)
-                self.new_player_list.append(self.player_sprite)
-                self.new_player_sprite.center_x = old_player_sprite_center_x
-                self.new_player_sprite.center_y = old_player_sprite_center_y
-
-                # coins
-                self.new_coin_list = old_coin_list
-                coin = arcade.Sprite(":resources:images/items/coinGold.png", COIN_SCALING)
-                self.new_coin_list.append(coin)
-
-                # new physics engine
-                self.physics_engine = arcade.PhysicsEnginePlatformer(self.new_player_sprite,
-                                                                     self.new_wall_list, gravity_constant=GRAVITY)
 
     def on_draw(self):
         """ Render the screen. """
