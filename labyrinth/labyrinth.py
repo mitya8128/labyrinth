@@ -343,7 +343,7 @@ class MyGame(arcade.Window, Cave):
             self.new_player_list.draw()
             self.coin_list.draw()
         elif key == arcade.key.R:
-            self.setup(0.125, COIN_SCALING,0.4,4,3,4)
+            self.setup(0.125, COIN_SCALING,0.4,4,3,4,yellow)
             self.score = 0
 
     def on_key_release(self, key, modifiers):
