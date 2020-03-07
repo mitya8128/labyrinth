@@ -426,7 +426,7 @@ class MyGame(arcade.Window, Cave):
         if self.player_sprite.center_y < self.down_map:
             self.reload = True
             time.sleep(5.0)
-            self.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4)
+            self.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4,yellow)
             self.score = 0
         # Check for collision with portal
         if arcade.check_for_collision(self.player_sprite, self.portal_sprite) == True:
