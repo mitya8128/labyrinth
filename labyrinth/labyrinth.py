@@ -40,6 +40,9 @@ WINDOW_TITLE = "Procedural Caves"
 # will be merged into one sprite.
 MERGE_SPRITES = False
 
+# wallsprites
+yellow = ":resources:images/tiles/grassCenter.png"
+blue = ":resources:images/tiles/dirtCenter.png"
 
 def create_grid(width, height):
     """ Create a two-dimensional grid of specified size. """
@@ -108,7 +111,7 @@ class Cave():
         self.portal_sprite = None
 
     # self.set_update_rate(1/55)    # for mac os
-    def setup(self, SPRITE_SCALING, COIN_SCALING):
+    def setup(self, SPRITE_SCALING, COIN_SCALING,CHANCE_TO_START_ALIVE,NUMBER_OF_STEPS,DEATH_LIMIT,BIRTH_LIMIT,wall_sprite):
         self.wall_list = arcade.SpriteList(use_spatial_hash=True)
         self.player_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
@@ -129,7 +132,7 @@ class Cave():
             for row in range(GRID_HEIGHT):
                 for column in range(GRID_WIDTH):
                     if self.grid[row][column] == 1:
-                        wall = arcade.Sprite(":resources:images/tiles/grassCenter.png", SPRITE_SCALING)
+                        wall = arcade.Sprite(wall_sprite, SPRITE_SCALING)
                         wall._set_alpha(254)  # set sprites visibility (0-invisible,255-opaque)
                         wall.center_x = column * SPRITE_SIZE + SPRITE_SIZE / 2
                         wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
@@ -151,7 +154,7 @@ class Cave():
                     column_count = end_column - start_column + 1
                     column_mid = (start_column + end_column) / 2
 
-                    wall = arcade.Sprite(":resources:images/tiles/grassCenter.png", SPRITE_SCALING,
+                    wall = arcade.Sprite(wall_sprite, SPRITE_SCALING,
                                          repeat_count_x=column_count)
                     wall.center_x = column_mid * SPRITE_SIZE + SPRITE_SIZE / 2
                     wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
@@ -218,98 +221,6 @@ class Cave():
                 placed = True
 
         # Physics engine
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
-                                                             self.wall_list, gravity_constant=GRAVITY)
-
-    def setup_2(self, SPRITE_SCALING, COIN_SCALING):
-        self.wall_list = arcade.SpriteList(use_spatial_hash=True)
-        self.player_list = arcade.SpriteList()
-        self.coin_list = arcade.SpriteList()
-        self.game_over = False
-
-        # Create cave system using a 2D grid
-        self.grid = create_grid(GRID_WIDTH, GRID_HEIGHT)
-        initialize_grid(self.grid, 0.45)
-        for step in range(NUMBER_OF_STEPS):
-            self.grid = do_simulation_step(self.grid, 4, 4)
-
-        # Create sprites based on 2D grid
-        if not MERGE_SPRITES:
-            # This is the simple-to-understand method. Each grid location
-            # is a sprite.
-            for row in range(GRID_HEIGHT):
-                for column in range(GRID_WIDTH):
-                    if self.grid[row][column] == 1:
-                        wall = arcade.Sprite(":resources:images/tiles/dirtCenter.png", SPRITE_SCALING)
-                        wall._set_alpha(254)  # set sprites visibility (0-invisible,255-opaque)
-                        wall.center_x = column * SPRITE_SIZE + SPRITE_SIZE / 2
-                        wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
-                        self.wall_list.append(wall)
-        else:
-
-            for row in range(GRID_HEIGHT):
-                column = 0
-                while column < GRID_WIDTH:
-                    while column < GRID_WIDTH and self.grid[row][column] == 0:
-                        column += 1
-                    start_column = column
-                    while column < GRID_WIDTH and self.grid[row][column] == 1:
-                        column += 1
-                    end_column = column - 1
-
-                    column_count = end_column - start_column + 1
-                    column_mid = (start_column + end_column) / 2
-
-                    wall = arcade.Sprite(":resources:images/tiles/dirtCenter.png", SPRITE_SCALING,
-                                         repeat_count_x=column_count)
-                    wall.center_x = column_mid * SPRITE_SIZE + SPRITE_SIZE / 2
-                    wall.center_y = row * SPRITE_SIZE + SPRITE_SIZE / 2
-                    wall.width = SPRITE_SIZE * column_count
-                    self.wall_list.append(wall)
-
-        # Set up the player
-        self.player_sprite = arcade.Sprite(":resources:images/animated_characters/female_person/femalePerson_idle.png",
-                                           SPRITE_SCALING)
-        self.player_list.append(self.player_sprite)
-
-        # loop that places coins on the map
-        for x in range(128, 1250, 20):
-            coin = arcade.Sprite(":resources:images/items/coinGold.png", COIN_SCALING)
-            # Boolean variable if we successfully placed the coin
-            coin_placed_successfully = False
-            # Keep trying until success
-            while not coin_placed_successfully:
-                coin.center_x = random.randrange(GRID_WIDTH * SPRITE_SIZE)
-                coin.center_y = random.randrange(GRID_HEIGHT * SPRITE_SIZE)
-                # See if the coin is hitting a wall
-                wall_hit_list = arcade.check_for_collision_with_list(coin, self.wall_list)
-                # See if the coin is hitting another coin
-                coin_hit_list = arcade.check_for_collision_with_list(coin, self.coin_list)
-                if len(wall_hit_list) == 0 and len(coin_hit_list) == 0:
-                    # It is!
-                    coin_placed_successfully = True
-
-            self.coin_list.append(coin)
-            old_coin_list = self.coin_list
-
-        # Randomly place the player. If we are in a wall, repeat until we aren't.
-        placed = False
-        while not placed:
-
-            # Randomly position
-            max_x = GRID_WIDTH * SPRITE_SIZE
-            max_y = GRID_HEIGHT * SPRITE_SIZE
-            self.player_sprite.center_x = 64 + random.randrange(100)
-            self.player_sprite.center_y = 250 + random.randrange(100)
-            old_player_sprite_center_x = self.player_sprite.center_x
-            old_player_sprite_center_y = self.player_sprite.center_y
-
-            # Are we in a wall?
-            walls_hit = arcade.check_for_collision_with_list(self.player_sprite, self.wall_list)
-            if len(walls_hit) == 0:
-                # Not in a wall! Success!
-                placed = True
-
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
                                                              self.wall_list, gravity_constant=GRAVITY)
 
@@ -432,7 +343,7 @@ class MyGame(arcade.Window, Cave):
             self.new_player_list.draw()
             self.coin_list.draw()
         elif key == arcade.key.R:
-            self.setup(0.125, COIN_SCALING)
+            self.setup(0.125, COIN_SCALING,0.4,4,3,4)
             self.score = 0
 
     def on_key_release(self, key, modifiers):
@@ -515,17 +426,17 @@ class MyGame(arcade.Window, Cave):
         if self.player_sprite.center_y < self.down_map:
             self.reload = True
             time.sleep(5.0)
-            self.setup(SPRITE_SCALING, COIN_SCALING)
+            self.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4)
             self.score = 0
         # Check for collision with portal
         if arcade.check_for_collision(self.player_sprite, self.portal_sprite) == True:
-            # game = MyGame()
-            self.setup_2(SPRITE_SCALING, COIN_SCALING)
+            # self.setup_2(SPRITE_SCALING, COIN_SCALING)
+            self.setup(SPRITE_SCALING, COIN_SCALING, 0.45, 4, 4, 4,blue)
 
 
 def main():
     game = MyGame()
-    game.setup(SPRITE_SCALING, COIN_SCALING)
+    game.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4,yellow)
     arcade.run()
 
 
