@@ -1,6 +1,8 @@
 
+from pyo import*
+from tkinter import*
+
 def generate_melody():
-    import pyo
 
     s = Server().boot()
     s.start()
@@ -17,6 +19,7 @@ def generate_melody():
     mod2 = Sine(freq=100, mul=50)
 
     a = Sine(freq=trhz + mod2, mul=tr2 * 0.2).out()
+    s.gui(locals())
 
 
 
