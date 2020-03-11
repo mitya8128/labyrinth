@@ -19,10 +19,10 @@ GRID_WIDTH = 400
 GRID_HEIGHT = 300
 
 # Parameters for cellular automata
-CHANCE_TO_START_ALIVE = 0.4  # initially 0.4
-DEATH_LIMIT = 3  # initially 3
-BIRTH_LIMIT = 4  # initially 4
-NUMBER_OF_STEPS = 4  # initially 4
+# CHANCE_TO_START_ALIVE = 0.4  # initially 0.4
+# DEATH_LIMIT = 3  # initially 3
+# BIRTH_LIMIT = 4  # initially 4
+# NUMBER_OF_STEPS = 4  # initially 4
 
 # Physics
 MOVEMENT_SPEED = 3  # initially 3
@@ -99,18 +99,45 @@ def do_simulation_step(old_grid, DEATH_LIMIT, BIRTH_LIMIT):
     return new_grid
 
 
-class Cave():
-    # class to make caves
+
+
+class MyGame(arcade.Window):
+    """
+    Main application class.
+    """
 
     def __init__(self):
+        super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, resizable=True)
+
+        # Set the working directory
+        file_path = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(file_path)
+
+        self.view_bottom = 0
+        self.view_left = 0
+        self.draw_time = 0
+        self.processing_time = 0
+        self.physics_engine = None
+        self.game_over = False
+        self.score = 0
+        self.end_map_y = (GRID_HEIGHT * SPRITE_SIZE) + 10
+        self.down_map = -300
+        self.reload = False
 
         self.grid = None
         self.wall_list = None
         self.player_list = None
         self.player_sprite = None
         self.portal_sprite = None
+        self.coin_list = None
+        self.portal_list = None
 
-    # self.set_update_rate(1/55)    # for mac os
+        # self.set_update_rate(1/55)    # for mac os
+
+        arcade.set_background_color(arcade.color.BLACK)
+
+
+    # setting up labyrinth characterstics
     def setup(self, SPRITE_SCALING, COIN_SCALING,CHANCE_TO_START_ALIVE,NUMBER_OF_STEPS,DEATH_LIMIT,BIRTH_LIMIT,wall_sprite):
         self.wall_list = arcade.SpriteList(use_spatial_hash=True)
         self.player_list = arcade.SpriteList()
@@ -223,32 +250,6 @@ class Cave():
         # Physics engine
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
                                                              self.wall_list, gravity_constant=GRAVITY)
-
-
-class MyGame(arcade.Window, Cave):
-    """
-    Main application class.
-    """
-
-    def __init__(self):
-        super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, resizable=True)
-
-        # Set the working directory
-        file_path = os.path.dirname(os.path.abspath(__file__))
-        os.chdir(file_path)
-
-        self.view_bottom = 0
-        self.view_left = 0
-        self.draw_time = 0
-        self.processing_time = 0
-        self.physics_engine = None
-        self.game_over = False
-        self.score = 0
-        self.end_map_y = (GRID_HEIGHT * SPRITE_SIZE) + 10
-        self.down_map = -300
-        self.reload = False
-
-        arcade.set_background_color(arcade.color.BLACK)
 
     def on_draw(self):
         """ Render the screen. """
@@ -429,7 +430,7 @@ class MyGame(arcade.Window, Cave):
             self.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4,yellow)
             self.score = 0
         # Check for collision with portal
-        if arcade.check_for_collision(self.player_sprite, self.portal_sprite) == True:
+        if arcade.check_for_collision(self.player_sprite, self.portal_sprite):
             # self.setup_2(SPRITE_SCALING, COIN_SCALING)
             self.setup(SPRITE_SCALING, COIN_SCALING, 0.45, 4, 4, 4,blue)
 
