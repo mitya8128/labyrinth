@@ -10,7 +10,7 @@ import time
 import os
 
 # Sprite scaling.
-SPRITE_SCALING = 0.125
+SPRITE_SCALING = 0.135
 SPRITE_SIZE = 128 * SPRITE_SCALING
 COIN_SCALING = 0.25
 
@@ -26,7 +26,7 @@ GRID_HEIGHT = 300
 
 # Physics
 MOVEMENT_SPEED = 3  # initially 3
-JUMP_SPEED = 20  # optimally 12
+JUMP_SPEED = 12  # optimally 12
 GRAVITY = 0.5  # initially 0.5
 
 # How close the player can get to the edge before we scroll.
@@ -432,12 +432,12 @@ class MyGame(arcade.Window):
         # Check for collision with portal
         if arcade.check_for_collision(self.player_sprite, self.portal_sprite):
             # self.setup_2(SPRITE_SCALING, COIN_SCALING)
-            self.setup(SPRITE_SCALING, COIN_SCALING, 0.45, 4, 4, 4,blue)
+            self.setup(SPRITE_SCALING, COIN_SCALING, 0.3, 4, 2, 4,blue)    # 0.3,4,1,4,blue
 
 
 def main():
     game = MyGame()
-    game.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4,yellow)
+    game.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4,yellow)    # 0.4,4,3,4,yellow
     arcade.run()
 
 
