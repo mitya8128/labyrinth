@@ -132,6 +132,7 @@ class MyGame(arcade.Window):
         self.coin_list = None
         self.portal_list = None
 
+        #global SPRITE_SCALING    #if it declare global strange ungluing of tiles
         # self.set_update_rate(1/55)    # for mac os
 
         arcade.set_background_color(arcade.color.BLACK)
@@ -299,6 +300,12 @@ class MyGame(arcade.Window):
                          self.height - 57 + self.view_bottom,
                          arcade.color.WHITE, 16)
 
+        output = f"Sprite scaling: {SPRITE_SCALING:.3f}"
+        arcade.draw_text(output,
+                         self.view_left + 20,
+                         self.height - 77 + self.view_bottom,
+                         arcade.color.WHITE, 16)
+
         if self.game_over:
             arcade.draw_text("Game Over", self.view_left + 500, self.view_bottom + 400, arcade.color.WHITE, 30)
             arcade.draw_text(f"Collected coins: {self.score:.3f}", self.view_left + 500, self.view_bottom + 350,
@@ -311,7 +318,6 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
-
         if key == arcade.key.SPACE:
             if self.physics_engine.can_jump():
                 self.player_sprite.change_y = JUMP_SPEED
@@ -326,25 +332,14 @@ class MyGame(arcade.Window):
         elif key == arcade.key.B:
             arcade.set_background_color(arcade.color.BLACK)
         elif key == arcade.key.KEY_1:
-            SPRITE_SCALING = 0.125  # here we need some function that draw the wall/coin/player lists with another scaling values
-            self.new_lists(SPRITE_SCALING, COIN_SCALING)
-            self.new_wall_list.draw()
-            self.new_player_list.draw()
-            self.new_coin_list.draw()
+            global SPRITE_SCALING
+            SPRITE_SCALING = 0.120
         elif key == arcade.key.KEY_2:
-            SPRITE_SCALING = 0.325
-            self.new_lists(SPRITE_SCALING, COIN_SCALING)
-            self.new_wall_list.draw()
-            self.new_player_list.draw()
-            self.new_coin_list.draw()
+            SPRITE_SCALING = 0.130
         elif key == arcade.key.KEY_3:
-            SPRITE_SCALING = 0.5
-            self.new_lists(SPRITE_SCALING, COIN_SCALING)
-            self.wall_list.draw()
-            self.new_player_list.draw()
-            self.coin_list.draw()
+            SPRITE_SCALING = 0.135
         elif key == arcade.key.R:
-            self.setup(0.125, COIN_SCALING,0.4,4,3,4,yellow)
+            self.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4,yellow)
             self.score = 0
 
     def on_key_release(self, key, modifiers):
