@@ -26,7 +26,7 @@ GRID_HEIGHT = 300
 
 # Physics
 MOVEMENT_SPEED = 3  # initially 3
-JUMP_SPEED = 12  # optimally 12
+JUMP_SPEED = 18  # optimally 12
 GRAVITY = 0.5  # initially 0.5
 
 # How close the player can get to the edge before we scroll.
@@ -190,7 +190,7 @@ class MyGame(arcade.Window):
                     self.wall_list.append(wall)
 
         # Set up and place the portal
-        self.portal_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_idle.png", 0.3)
+        self.portal_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_idle.png", SPRITE_SCALING)
         self.portal_sprite.alpha = 255
         self.portal_list.append(self.portal_sprite)
 
@@ -225,7 +225,7 @@ class MyGame(arcade.Window):
                     coin_placed_successfully = True
 
             self.coin_list.append(coin)
-            old_coin_list = self.coin_list
+
 
         # Set up the player
         self.player_sprite = arcade.Sprite(":resources:images/animated_characters/female_person/femalePerson_idle.png",
@@ -237,8 +237,6 @@ class MyGame(arcade.Window):
         while not placed:
 
             # Randomly position
-            max_x = GRID_WIDTH * SPRITE_SIZE
-            max_y = GRID_HEIGHT * SPRITE_SIZE
             self.player_sprite.center_x = 64 + random.randrange(100)
             self.player_sprite.center_y = 250 + random.randrange(100)
 
