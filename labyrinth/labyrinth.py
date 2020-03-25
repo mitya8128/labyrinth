@@ -44,6 +44,8 @@ MERGE_SPRITES = False
 yellow = ":resources:images/tiles/grassCenter.png"
 blue = ":resources:images/tiles/dirtCenter.png"
 
+size = {'small':'small','medium':'medium', 'big':'big'}
+
 def create_grid(width, height):
     """ Create a two-dimensional grid of specified size. """
     return [[0 for _x in range(width)] for _y in range(height)]
@@ -99,7 +101,7 @@ def do_simulation_step(old_grid, DEATH_LIMIT, BIRTH_LIMIT):
     return new_grid
 
 
-
+portal_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_idle.png", SPRITE_SCALING)
 
 class MyGame(arcade.Window):
     """
@@ -123,14 +125,16 @@ class MyGame(arcade.Window):
         self.end_map_y = (GRID_HEIGHT * SPRITE_SIZE) + 10
         self.down_map = -300
         self.reload = False
+        self.flag = None
+
 
         self.grid = None
         self.wall_list = None
         self.player_list = None
         self.player_sprite = None
-        self.portal_sprite = None
+       # self.portal_sprite = None
         self.coin_list = None
-        self.portal_list = None
+        #self.portal_list = None
 
         #global SPRITE_SCALING    #if it declare global strange ungluing of tiles
         # self.set_update_rate(1/55)    # for mac os
@@ -190,19 +194,21 @@ class MyGame(arcade.Window):
                     self.wall_list.append(wall)
 
         # Set up and place the portal
-        self.portal_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_idle.png", SPRITE_SCALING)
-        self.portal_sprite.alpha = 255
-        self.portal_list.append(self.portal_sprite)
+        global portal_sprite
+        #self.portal_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_idle.png", SPRITE_SCALING)
+        #self.portal_sprite.alpha = 255
+        #self.portal_sprite._set_alpha(254)
+        self.portal_list.append(portal_sprite)
 
         placed_portal = False
         while not placed_portal:
 
             # Randomly position
-            self.portal_sprite.center_x = 500
-            self.portal_sprite.center_y = self.end_map_y + random.randrange(10)
+            portal_sprite.center_x = 500
+            portal_sprite.center_y = self.end_map_y + random.randrange(10)
 
             # Are we in a wall?
-            walls_hit = arcade.check_for_collision_with_list(self.portal_sprite, self.wall_list)
+            walls_hit = arcade.check_for_collision_with_list(portal_sprite, self.wall_list)
             if len(walls_hit) == 0:
                 # Not in a wall! Success!
                 placed_portal = True
@@ -266,8 +272,8 @@ class MyGame(arcade.Window):
         self.coin_list.draw()
 
         # Draw info on the screen
-        # sprite_count = len(self.wall_list)
 
+        # sprite_count = len(self.wall_list)
         # output = f"Sprite Count: {sprite_count}"
         # arcade.draw_text(output,
         #                 self.view_left + 20,
@@ -298,8 +304,8 @@ class MyGame(arcade.Window):
                          self.height - 57 + self.view_bottom,
                          arcade.color.WHITE, 16)
 
-        output = f"Sprite scaling: {SPRITE_SCALING:.3f}"
-        arcade.draw_text(output,
+        #output = f"Size: {self.flag:.3f}"
+        arcade.draw_text(self.flag,
                          self.view_left + 20,
                          self.height - 77 + self.view_bottom,
                          arcade.color.WHITE, 16)
@@ -332,10 +338,13 @@ class MyGame(arcade.Window):
         elif key == arcade.key.KEY_1:
             global SPRITE_SCALING
             SPRITE_SCALING = 0.120
+            self.flag = str(size['small'])
         elif key == arcade.key.KEY_2:
             SPRITE_SCALING = 0.130
+            self.flag = str(size['medium'])
         elif key == arcade.key.KEY_3:
             SPRITE_SCALING = 0.135
+            self.flag = str(size['big'])
         elif key == arcade.key.R:
             self.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4,yellow)
             self.score = 0
@@ -423,7 +432,7 @@ class MyGame(arcade.Window):
             self.setup(SPRITE_SCALING, COIN_SCALING,0.4,4,3,4,yellow)
             self.score = 0
         # Check for collision with portal
-        if arcade.check_for_collision(self.player_sprite, self.portal_sprite):
+        if arcade.check_for_collision(self.player_sprite, portal_sprite):
             # self.setup_2(SPRITE_SCALING, COIN_SCALING)
             self.setup(SPRITE_SCALING, COIN_SCALING, 0.3, 4, 2, 4,blue)    # 0.3,4,1,4,blue
 
