@@ -434,7 +434,7 @@ class MyGame(arcade.Window):
         # Check for collision with portal
         if arcade.check_for_collision(self.player_sprite, portal_sprite):
             # self.setup_2(SPRITE_SCALING, COIN_SCALING)
-            self.setup(SPRITE_SCALING, COIN_SCALING, 0.3, 4, 2, 4,blue)    # 0.3,4,1,4,blue
+            self.setup(SPRITE_SCALING, COIN_SCALING, 0.3, 4, 2, 4,blue)    # 0.3,4,1,4,blue  #0.29,4,1,4,yellow
 
 
 def main():
