@@ -4,7 +4,10 @@ from tkinter import*
 
 def generate_melody():
 
-    s = Server().boot()
+    s = Server(duplex=0)
+    s.setOutputDevice(0)
+    s.setInOutDevice(1)
+    s.boot()
     s.start()
     mod = Sine(freq=50, mul=50)
     mod2 = Sine(freq=100, mul=50)
@@ -19,7 +22,7 @@ def generate_melody():
     mod2 = Sine(freq=100, mul=50)
 
     a = Sine(freq=trhz + mod2, mul=tr2 * 0.2).out()
-    s.gui(locals())
+    #s.gui(locals())
 
 
 
