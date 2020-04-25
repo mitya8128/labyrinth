@@ -8,29 +8,11 @@ import arcade
 import timeit
 import time
 import os
+from music_generator import generate_melody
 
 from pyo import*
 from tkinter import*
 
-def generate_melody():
-
-    s = Server()
-    s.boot()
-    s.start()
-    mod = Sine(freq=50, mul=50)
-    mod2 = Sine(freq=100, mul=50)
-
-    t = CosTable([(0, 0), (100, 1), (500, .3), (8191, 0)])
-    beat = Beat(time=.125, taps=16, w1=[90, 80], w2=50, w3=35, poly=1).play()  # try taps=10 and larger poly
-    trmid = TrigXnoiseMidi(beat, dist=12, mrange=(60, 96))
-    trhz = Snap(trmid, choice=[0, 2, 3, 5, 7, 8, 10], scale=1)
-    tr2 = TrigEnv(beat, table=t, dur=beat['dur'], mul=beat['amp'])
-
-    mod = Sine(freq=50, mul=50)
-    mod2 = Sine(freq=100, mul=50)
-
-    a = Sine(freq=trhz + mod2, mul=tr2 * 0.2).out()
-    s.gui(locals())
 
 # Sprite scaling.
 SPRITE_SCALING = 0.135
